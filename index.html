@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Radio Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .player-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #volume {
+            width: 80%;
+            margin: 15px 0;
+        }
+        .station-info {
+            margin-top: 20px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <h1>Online Radio Player</h1>
+        
+        <div class="controls">
+            <button id="playBtn">Play</button>
+            <button id="stopBtn">Stop</button>
+        </div>
+        
+        <div>
+            <label for="volume">Volume:</label>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="0.7">
+        </div>
+        
+        <div class="station-selector">
+            <h3>Select a Station:</h3>
+            <select id="stationSelector">
+                <option value="http://stream.radioreklama.bg:80/radio1rock128">Rock Radio</option>
+                <option value="http://icecast.rtl.fr/rtl-1-44-128">Pop Radio</option>
+                <option value="http://stream.live.vc.bbcmedia.co.uk/bbc_radio_one">BBC Radio 1</option>
+                <option value="http://stream.srg-ssr.ch/m/rsj/mp3_128">Jazz Radio</option>
+            </select>
+        </div>
+        
+        <div class="station-info">
+            <p id="currentStation">Currently selected: Rock Radio</p>
+        </div>
+        
+        <audio id="radioPlayer" controls style="display: none;"></audio>
+    </div>
+
+    <script>
+        const player = document.getElementById('radioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const volumeControl = document.getElementById('volume');
+        const stationSelector = document.getElementById('stationSelector');
+        const currentStationDisplay = document.getElementById('currentStation');
+        
+        // Set initial volume
+        player.volume = volumeControl.value;
+        
+        // Play button functionality
+        playBtn.addEventListener('click', function() {
+            const selectedStation = stationSelector.value;
+            player.src = selectedStation;
+            player.play();
+            currentStationDisplay.textContent = `Now playing: ${stationSelector.options[stationSelector.selectedIndex].text}`;
+        });
+        
+        // Stop button functionality
+        stopBtn.addEventListener('click', function() {
+            player.pause();
+            currentStationDisplay.textContent = `Playback stopped`;
+        });
+        
+        // Volume control
+        volumeControl.addEventListener('input', function() {
+            player.volume = this.value;
+        });
+        
+        // Station selection
+        stationSelector.addEventListener('change', function() {
+            currentStationDisplay.textContent = `Currently selected: ${this.options[this.selectedIndex].text}`;
+        });
+    </script>
+</body>
+</html>
